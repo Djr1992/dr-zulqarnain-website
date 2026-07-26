@@ -1,0 +1,6 @@
+{
+  "name": "Dr Muhammad Zulqarnain - Cardiologist",
+  "description": "Official medical website for Dr Muhammad Zulqarnain, Assistant Professor of Cardiology & Consultant Interventional Cardiologist at Nawaz Sharif Institute Of Cardiology, Sargodha.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
