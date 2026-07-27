@@ -19,22 +19,42 @@ export const EditContentModal: React.FC<EditContentModalProps> = ({
 }) => {
   const [formData, setFormData] = useState<SiteConfig>({ ...config });
 
+  const [dragOver, setDragOver] = useState(false);
+
   if (!isOpen) return null;
 
   const handleChange = (field: keyof SiteConfig, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const processFile = (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file (PNG, JPG, WEBP, etc.).');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (typeof event.target?.result === 'string') {
+        handleChange('doctorPhotoUrl', event.target.result);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          handleChange('doctorPhotoUrl', reader.result);
-        }
-      };
-      reader.readAsDataURL(file);
+      processFile(file);
+      e.target.value = '';
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      processFile(file);
     }
   };
 
@@ -76,35 +96,62 @@ export const EditContentModal: React.FC<EditContentModalProps> = ({
           {/* Doctor Photo Section */}
           <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3">
             <label className="block text-xs font-bold text-slate-700 uppercase">
-              Doctor Portrait Photo
+              Doctor Portrait Photo (Direct File Upload & Preview)
             </label>
-            <div className="flex items-center gap-4">
-              <img
-                src={formData.doctorPhotoUrl}
-                alt="Preview"
-                referrerPolicy="no-referrer"
-                className="w-16 h-20 object-cover rounded-xl border border-slate-300 shadow-sm"
-              />
-              <div className="flex-1 space-y-2">
-                <input
-                  type="url"
-                  placeholder="Paste image URL (https://...)"
-                  value={formData.doctorPhotoUrl}
-                  onChange={(e) => handleChange('doctorPhotoUrl', e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="relative group shrink-0">
+                <img
+                  src={formData.doctorPhotoUrl}
+                  alt="Doctor Preview"
+                  referrerPolicy="no-referrer"
+                  className="w-20 h-24 object-cover rounded-xl border-2 border-teal-600/30 shadow-md bg-white"
                 />
-                
+                <span className="absolute bottom-1 right-1 bg-teal-800 text-white text-[9px] px-1.5 py-0.5 rounded font-bold">
+                  Preview
+                </span>
+              </div>
+
+              <div className="flex-1 w-full space-y-2">
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setDragOver(true);
+                  }}
+                  onDragLeave={() => setDragOver(false)}
+                  onDrop={handleDrop}
+                  className={`p-3 rounded-xl border-2 border-dashed transition-all flex flex-col items-center justify-center text-center gap-1.5 ${
+                    dragOver
+                      ? 'border-teal-500 bg-teal-50/80'
+                      : 'border-slate-300 bg-white hover:border-slate-400'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <label className="cursor-pointer inline-flex items-center gap-1.5 bg-[#0f2b38] hover:bg-teal-900 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition-colors">
+                      <Upload className="w-3.5 h-3.5 text-teal-300" />
+                      <span>Choose Image File...</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                      />
+                    </label>
+                    <span className="text-xs text-slate-500">or drag & drop photo here</span>
+                  </div>
+                  <p className="text-[11px] text-slate-500">
+                    Directly loaded as unmodified image via FileReader API (PNG, JPG, WEBP)
+                  </p>
+                </div>
+
                 <div className="flex items-center gap-2">
-                  <label className="cursor-pointer inline-flex items-center gap-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors">
-                    <Upload className="w-3.5 h-3.5 text-slate-700" />
-                    <span>Upload Local Image File</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                    />
-                  </label>
+                  <span className="text-xs text-slate-500 shrink-0 font-medium">Or Image URL:</span>
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={formData.doctorPhotoUrl}
+                    onChange={(e) => handleChange('doctorPhotoUrl', e.target.value)}
+                    className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
                 </div>
               </div>
             </div>

@@ -20,9 +20,13 @@ import { Footer } from './components/Footer';
 export default function App() {
   const [siteConfig, setSiteConfig] = useState<SiteConfig>(() => {
     try {
-      const saved = localStorage.getItem('dr_zulqarnain_site_config_v3');
+      const saved = localStorage.getItem('dr_zulqarnain_site_config_v5');
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (!parsed.doctorPhotoUrl || parsed.doctorPhotoUrl.includes('unsplash.com') || parsed.doctorPhotoUrl.includes('.svg')) {
+          parsed.doctorPhotoUrl = DEFAULT_SITE_CONFIG.doctorPhotoUrl;
+        }
+        return { ...DEFAULT_SITE_CONFIG, ...parsed };
       }
     } catch (e) {
       console.error('Error loading config from localStorage', e);
@@ -38,7 +42,7 @@ export default function App() {
   const handleSaveConfig = (newConfig: SiteConfig) => {
     setSiteConfig(newConfig);
     try {
-      localStorage.setItem('dr_zulqarnain_site_config_v3', JSON.stringify(newConfig));
+      localStorage.setItem('dr_zulqarnain_site_config_v5', JSON.stringify(newConfig));
     } catch (e) {
       console.error('Error saving config to localStorage', e);
     }
@@ -47,7 +51,7 @@ export default function App() {
   const handleResetConfig = () => {
     setSiteConfig(DEFAULT_SITE_CONFIG);
     try {
-      localStorage.removeItem('dr_zulqarnain_site_config_v3');
+      localStorage.removeItem('dr_zulqarnain_site_config_v5');
     } catch (e) {
       console.error('Error resetting config in localStorage', e);
     }

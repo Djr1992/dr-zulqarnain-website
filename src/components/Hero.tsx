@@ -145,8 +145,7 @@ export const Hero: React.FC<HeroProps> = ({ config, onOpenAppointment, onOpenEdi
                   className="w-full h-full object-cover object-top sm:object-center transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => {
                     // Fallback image if custom image URL breaks
-                    (e.target as HTMLImageElement).src =
-                      'https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=1000&auto=format&fit=crop';
+                    (e.target as HTMLImageElement).src = '/doctor_photo.jpg';
                   }}
                 />
 
