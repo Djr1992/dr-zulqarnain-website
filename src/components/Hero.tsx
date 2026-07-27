@@ -137,12 +137,12 @@ export const Hero: React.FC<HeroProps> = ({ config, onOpenAppointment, onOpenEdi
             <div className="relative w-full max-w-md bg-teal-950/90 rounded-2xl border-2 border-teal-400/50 p-3 shadow-2xl overflow-hidden group">
               
               {/* Doctor Photo Container */}
-              <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-slate-900 border border-teal-800/60">
+              <div className="relative aspect-[4/5] sm:aspect-[3/4] w-full rounded-xl overflow-hidden bg-slate-900 border border-teal-800/60">
                 <img
                   src={config.doctorPhotoUrl}
                   alt={config.doctorName}
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover object-top sm:object-center transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => {
                     // Fallback image if custom image URL breaks
                     (e.target as HTMLImageElement).src =

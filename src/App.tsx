@@ -20,7 +20,7 @@ import { Footer } from './components/Footer';
 export default function App() {
   const [siteConfig, setSiteConfig] = useState<SiteConfig>(() => {
     try {
-      const saved = localStorage.getItem('dr_zulqarnain_site_config_v2');
+      const saved = localStorage.getItem('dr_zulqarnain_site_config_v3');
       if (saved) {
         return JSON.parse(saved);
       }
@@ -38,7 +38,7 @@ export default function App() {
   const handleSaveConfig = (newConfig: SiteConfig) => {
     setSiteConfig(newConfig);
     try {
-      localStorage.setItem('dr_zulqarnain_site_config_v2', JSON.stringify(newConfig));
+      localStorage.setItem('dr_zulqarnain_site_config_v3', JSON.stringify(newConfig));
     } catch (e) {
       console.error('Error saving config to localStorage', e);
     }
@@ -47,7 +47,7 @@ export default function App() {
   const handleResetConfig = () => {
     setSiteConfig(DEFAULT_SITE_CONFIG);
     try {
-      localStorage.removeItem('dr_zulqarnain_site_config_v2');
+      localStorage.removeItem('dr_zulqarnain_site_config_v3');
     } catch (e) {
       console.error('Error resetting config in localStorage', e);
     }

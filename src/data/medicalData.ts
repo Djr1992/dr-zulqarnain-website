@@ -10,9 +10,8 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   phoneRaw: '03074655584',
   whatsappUrl: 'https://wa.me/923074655584',
   facebookUrl: 'https://www.facebook.com/share/1DHF8odBpD/',
-  // High quality professional cardiologist portrait image placeholder
-  doctorPhotoUrl:
-    'https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=1000&auto=format&fit=crop',
+  // High quality professional cardiologist portrait photo of Dr. Muhammad Zulqarnain
+  doctorPhotoUrl: '/doctor_photo.svg',
   sadiqHospitalAddress: 'Nawaz Sharif Institute Of Cardiology, Sargodha',
   sillanwaliAddress: 'Nawaz Sharif Institute Of Cardiology, Sargodha',
 };
